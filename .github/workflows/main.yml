@@ -35,7 +35,7 @@ jobs:
         source: ".,!node_modules"
         target: "~/app/gobarber-backend-nodejs-prod"
     
-    #Run yarn on Digital Ocean
+    #Run production scripts
     - name: Install dependencies on Digital Ocean Server
       uses: appleboy/scp-action@master
       with:
@@ -44,31 +44,9 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          cd app/gobarber-backend-nodejs-prod
+          cd ~/app/gobarber-backend-nodejs-prod
           yarn
-    
-    #Run migrations  
-    - name: Run migrations on Digital Ocean
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        port: ${{ secrets.SSH_PORT }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          cd app/gobarber-backend-nodejs-prod
           ./node_modules/.bin/typeorm migration:run
-    
-    #Restart the server
-    - name: Restart server
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        port: ${{ secrets.SSH_PORT }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          cd app/gobarber-backend-nodejs-prod
           pm2 restart gobarber-api
 
 
