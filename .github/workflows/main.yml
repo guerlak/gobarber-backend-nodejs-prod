@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v1.4.2
+      with:
+        node-version: 12.x
+    
+    #Dependency installations
+    - name: Install dependencies
+      run: yarn
+      
+    #Run the build
+    - name: Run build
+      run: yarn build
+    
+    #Copy /dist folder do Digital Ocean
+    - name: copy dist to digital ocean
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.SS_KEY }}
+        source: "dist"
+        target: "test"
+        
+      
+
+#Override existing /dist code folder  
+#Run yarn on Digital Ocean
+#Run migrations
+#Restart the server
+
