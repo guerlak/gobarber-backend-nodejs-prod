@@ -33,7 +33,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         key: ${{ secrets.SSH_KEY }}
         source: ".,!node_modules"
-        target: "~/app/gobarber-backend-nodejs-prod"
+        target: "~/app/gobarber-api"
     
     #Run production scripts
     - name: Run production scripts
@@ -44,10 +44,10 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          cd ~/app/gobarber-backend-nodejs-prod
+          cd ~/app/gobarber-api
           yarn
           ./node_modules/.bin/typeorm migration:run
-          pm2 restart gobarber-api
+          pm2 restart gobarber
 
 
 
