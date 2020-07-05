@@ -18,16 +18,16 @@ passwordRouter.post(
 );
 
 passwordRouter.post(
-  "/reset",
-  celebrate({
-    [Segments.BODY]: {
-      password: Joi.string().required(),
-      password_confirmation: Joi.string().required().valid(Joi.ref("password")),
-    },
-    [Segments.QUERY]: {
-      token: Joi.string().uuid().required(),
-    },
-  }),
+  "/reset-password",
+  // celebrate({
+  //   [Segments.BODY]: {
+  //     password: Joi.string().required(),
+  //     password_confirmation: Joi.string().required().valid(Joi.ref("password")),
+  //   },
+  //   [Segments.QUERY]: {
+  //     token: Joi.string().required(),
+  //   },
+  // }),
   resetForgotPassword.create
 );
 

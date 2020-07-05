@@ -28,8 +28,6 @@ class SESMailProvider implements IMailProvider {
     subject,
     template,
   }: ISendMailDTO): Promise<void> {
-    console.log("Its working...");
-
     const message = {
       from: {
         name: mailConfig.defaults.from.name,
@@ -45,5 +43,4 @@ class SESMailProvider implements IMailProvider {
     await this.clientTransporter.sendMail(message);
   }
 }
-
 export default SESMailProvider;

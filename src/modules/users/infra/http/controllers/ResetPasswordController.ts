@@ -6,10 +6,14 @@ class ResetPasswordController {
   public async create(req: Request, res: Response) {
     const { password } = req.body;
     const { token } = req.query;
-    const resetService = container.resolve(ResetPassordService);
-    const auth = await resetService.execute({ token, password });
+    console.log(req.query);
 
-    return res.json(auth);
+    console.log("token");
+    console.log(token);
+    const resetService = container.resolve(ResetPassordService);
+    // const auth = await resetService.execute({ token, password });
+
+    return res.status(401).json("auth");
   }
 }
 

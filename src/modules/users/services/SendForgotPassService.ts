@@ -20,13 +20,13 @@ class SendForgotPassService {
   ) {}
 
   public async execute(data: IRequest): Promise<void> {
-    const existUser = await this.usersRepository.findByEmail(data.email);
+    const user = await this.usersRepository.findByEmail(data.email);
 
-    if (!existUser) {
+    if (!user) {
       throw new Error("No user found");
     }
 
-    const { token } = await this.tokensRepository.generate(existUser.id);
+    const { token } = await this.tokensRepository.generate(user.id);
 
     const forgotPassTemplate = path.resolve(
       __dirname,
@@ -35,16 +35,16 @@ class SendForgotPassService {
       "forgot_password.hbs"
     );
 
-    await this.mailProvider.sendEmail({
+    this.mailProvider.sendEmail({
       subject: "Recuperação de senha | GoBarber",
       to: {
-        name: existUser.name,
-        email: existUser.email,
+        name: user.name,
+        email: user.email,
       },
       template: {
         file: forgotPassTemplate,
         variables: {
-          name: existUser.name,
+          name: user.name,
           link: `${process.env.APP_WEB_URL}/reset-password?token=${token}`,
         },
       },
